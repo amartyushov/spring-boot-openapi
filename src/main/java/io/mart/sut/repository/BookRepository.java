@@ -24,4 +24,16 @@ public class BookRepository {
 	public Collection<Book> getBooks() {
 		return books.values();
 	}
+	
+	public Book update(Long id, Book book) {
+		return books.computeIfPresent(id, (aLong, bookToUpdate) -> {
+			bookToUpdate.setAuthor(book.getAuthor());
+			bookToUpdate.setTitle(book.getTitle());
+			return bookToUpdate;
+		});
+	}
+	
+	public void delete(Long id) {
+		books.remove(id);
+	}
 }
