@@ -5,10 +5,12 @@ plugins {
 	// plugins to generate OpenAPI
 	id "com.github.johnrengelman.processes" version "0.5.0"
 	id "org.springdoc.openapi-gradle-plugin" version "1.3.0"
+
+	// generate client from specification
+	id "org.openapi.generator" version "5.0.1"
 }
 
 group = 'io.mart'
-version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 repositories {
@@ -23,4 +25,19 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+
+// task for generating client
+openApiGenerate {
+	generatorName = "java"
+	inputSpec = "$buildDir/openapi.json".toString()
+	outputDir = "$buildDir/generated/client".toString()
+	library = "rest-assured"
+	apiPackage = "org.openapi.example.api"
+	invokerPackage = "org.openapi.example.invoker"
+	modelPackage = "org.openapi.example.model"
+	configOptions = [
+			dateLibrary: "java8"
+	]
 }
