@@ -1,0 +1,40 @@
+version: 2
+jobs:
+  build:
+    docker:
+      # https://circleci.com/docs/2.0/circleci-images/#openjdk
+      - image: circleci/openjdk:8-jdk
+
+    working_directory: ~/spring-boot-openapi
+
+    steps:
+      # git pull
+      - checkout
+
+      # setup testing env
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Login to DockerHub
+          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - spring-boot-openapi-{{ checksum "build.gradle" }}
+
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: spring-boot-openapi-{{ checksum "build.gradle" }}
+
+      # package into a jar
+      - run: ./gradlew build
+
+      # build and push docker image to docker hub
+      - run: docker build -t amartyushov/sut:latest .
+
+      # store raw contents of src code
+      - store_artifacts:
+          path: build/classes
+          destination: spring-boot-openapi
