@@ -1,4 +1,5 @@
 version: 2.1
+
 jobs:
   build:
     docker:
@@ -36,11 +37,9 @@ jobs:
           path: build/classes
           destination: spring-boot-openapi
 
-workflows:
-  fullworkflow:
+workflows: # a single workflow with a single job called build
+  build:
     jobs:
       - build:
-        context: mart-context
-#      - test:
-#          requires:
-#            - build
+          context: mart-context
+
