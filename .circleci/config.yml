@@ -8,7 +8,9 @@ jobs:
     working_directory: ~/spring-boot-openapi
 
     steps:
-      # git pull
+      - env:
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
       - checkout
 
       # setup testing env
@@ -18,11 +20,9 @@ jobs:
           name: Login to DockerHub
           command: docker login -u $DOCKER_USER -p $DOCKER_PASS
 
-      # Download and cache dependencies
       - restore_cache:
           keys:
             - spring-boot-openapi-{{ checksum "build.gradle" }}
-
       - save_cache:
           paths:
             - ~/.gradle
@@ -35,7 +35,6 @@ jobs:
       - run: docker build -t amartyushov/sut:latest .
 
       # store raw contents of src code
-      #
       - store_artifacts:
           path: build/classes
           destination: spring-boot-openapi
