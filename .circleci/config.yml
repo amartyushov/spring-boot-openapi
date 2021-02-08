@@ -39,7 +39,8 @@ jobs:
 workflows:
   fullworkflow:
     jobs:
-      - build
+      - build:
+        context: mart-context
 #      - test:
 #          requires:
 #            - build
