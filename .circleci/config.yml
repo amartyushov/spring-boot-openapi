@@ -39,3 +39,11 @@ jobs:
       - store_artifacts:
           path: build/classes
           destination: spring-boot-openapi
+
+workflows:
+  fullworkflow:
+    jobs:
+      - build
+#      - test:
+#          requires:
+#            - build
