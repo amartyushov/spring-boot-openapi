@@ -8,9 +8,6 @@ jobs:
     working_directory: ~/spring-boot-openapi
 
     steps:
-      - env:
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
-          DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
       - checkout
 
       # setup testing env
@@ -18,7 +15,7 @@ jobs:
           docker_layer_caching: true
       - run:
           name: Login to DockerHub
-          command: docker login -u $DOCKER_USER -p $DOCKER_PASS
+          command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
 
       - restore_cache:
           keys:
