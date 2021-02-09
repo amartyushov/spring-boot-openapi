@@ -32,6 +32,7 @@ jobs:
       with:
         image: amartiushov/sut
         registry: docker.io
+        tag: latest
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
