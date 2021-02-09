@@ -46,7 +46,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: upload generated client
-    - uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v2
       with:
         name: generated-client
         path: build/generated/client/target/openapi-java-client-2.jar
