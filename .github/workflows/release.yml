@@ -1,4 +1,4 @@
-name: release
+name: Release spec, client, image
 
 on:
   push:
