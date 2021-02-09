@@ -25,17 +25,17 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    - name: Build with Gradle
+    - name: Build application with Gradle
       run: ./gradlew build
 
     - name: Generate OpenApi specification
       run: ./gradlew clean generateOpenApiDocs
 
-    - name: Generate client
+    - name: Generate client from specification
       run: ./gradlew openApiGenerate
 
     - name: Build client
-      run: cd build/generated/client; chmod +x gradlew; ./gradlew build
+      run: cd build/generated/client; mvn clean install
 
 
     # https://github.com/mr-smithers-excellent/docker-build-push
@@ -56,4 +56,11 @@ jobs:
       with:
         name: generated-client
         path: build/generated/client/target/openapi-java-client-2.jar
+
+    - name: upload generated client
+      uses: actions/upload-artifact@v2
+      with:
+        name: generated-specification
+        path: build/openapi.json
+
 
