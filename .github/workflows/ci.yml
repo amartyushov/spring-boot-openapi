@@ -35,7 +35,7 @@ jobs:
       run: ./gradlew openApiGenerate
 
     - name: Build client
-      run: cd build/generated/client; ./gradlew build
+      run: cd build/generated/client; chmod +x gradlew; ./gradlew build
 
 
     # https://github.com/mr-smithers-excellent/docker-build-push
