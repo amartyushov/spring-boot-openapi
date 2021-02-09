@@ -1,0 +1,50 @@
+name: release
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build_release:
+    name: build_release
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: Generate OpenApi specification
+        run: ./gradlew clean generateOpenApiDocs
+
+      - name: Generate client from specification
+        run: ./gradlew openApiGenerate
+
+      - name: Build client
+        run: cd build/generated/client; mvn clean install
+
+      - name: version
+        run: echo first_version
+        id: version
+
+      - name: release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          draft: false
+          prerelease: false
+          release_name: ${{ steps.version.outputs.version }}
+          tag_name: first_tag #${{ github.ref }}
+          #body_path: CHANGELOG.md
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: upload linux artifact
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/openapi.json
+          asset_name: openApiSpecification.json
+          asset_content_type: application/json
