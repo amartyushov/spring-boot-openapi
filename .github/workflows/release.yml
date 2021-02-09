@@ -24,9 +24,9 @@ jobs:
       - name: Build client
         run: cd build/generated/client; mvn clean install
 
-      - name: version
-        run: echo first_version
-        id: version
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
 
       - name: release
         uses: actions/create-release@v1 # https://github.com/actions/create-release#example-workflow---create-a-release
@@ -34,8 +34,8 @@ jobs:
         with:
           draft: false
           prerelease: false
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ steps.get_version.outputs.VERSION }}
+          release_name: Release ${{ steps.get_version.outputs.VERSION }}
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
@@ -46,7 +46,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: build/openapi.json
-          asset_name: openApiSpecification.json
+          asset_name: ${{ steps.get_version.outputs.VERSION }}_openApiSpecification.json
           asset_content_type: application/json
 
       - name: upload generated client
@@ -56,7 +56,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: build/generated/client/target/openapi-java-client-2.jar
-          asset_name: generatedClient.jar
+          asset_name: ${{ steps.get_version.outputs.VERSION }}_generatedClient.jar
           asset_content_type: application/java-archive
 
       # https://github.com/mr-smithers-excellent/docker-build-push
@@ -65,7 +65,7 @@ jobs:
         with:
           image: amartiushov/sut
           registry: docker.io
-          tag: ${{ github.ref }}
+          tag: ${{ steps.get_version.outputs.VERSION }}
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
