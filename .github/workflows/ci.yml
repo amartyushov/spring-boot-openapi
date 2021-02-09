@@ -16,15 +16,24 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
     - name: Build with Gradle
       run: ./gradlew build
+
+    - name: Generate OpenApi specification
+      run: ./gradlew clean generateOpenApiDocs
+
+    - name: Generate client
+      run: ./gradlew openApiGenerate
+
 
     # https://github.com/mr-smithers-excellent/docker-build-push
     - name: Build and Push Docker Image
@@ -35,4 +44,10 @@ jobs:
         tag: latest
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: upload generated client
+    - uses: actions/upload-artifact@v2
+      with:
+        name: generated-client
+        path: build/generated/client/target/openapi-java-client-2.jar
 
