@@ -15,4 +15,7 @@ Note. Github actions are taking care of it.
 `docker build -t amartiushov/sut:v1 .`  
 `docker push amartiushov/sut:v1`
 
+## Create and push a tag
+`git tag v1.0; git push origin --tags`
+
 
