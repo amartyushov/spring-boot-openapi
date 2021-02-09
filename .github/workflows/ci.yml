@@ -45,6 +45,9 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
+    - name: check structure
+      run: pwd; ls -la; cd build/generated/client/; ls -la
+
     - name: upload generated client
       uses: actions/upload-artifact@v2
       with:
