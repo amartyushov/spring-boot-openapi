@@ -14,7 +14,21 @@ public class Book {
 	@NotBlank
 	@Size(min = 0, max = 30)
 	private String author;
-
+	
+	private Integer pageNumber;
+	
+	
+	public Integer getPageNumber() {
+		return pageNumber;
+	}
+	
+	
+	public Book setPageNumber(Integer pageNumber) {
+		this.pageNumber = pageNumber;
+		return this;
+	}
+	
+	
 	public long getId() {
 		return id;
 	}
