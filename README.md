@@ -13,7 +13,8 @@ https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-ge
 Note. Github actions are taking care of it.  
 `./gradlew build`  
 `docker build -t amartiushov/sut:v1 .`  
-`docker push amartiushov/sut:v1`
+`docker push amartiushov/sut:v1`  
+Note. link to docker repo https://hub.docker.com/repository/docker/amartiushov/sut
 
 ## Create and push a tag
 `git tag v1.0; git push origin --tags`
