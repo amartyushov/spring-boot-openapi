@@ -17,6 +17,19 @@ public class Book {
 	
 	private Integer pageNumber;
 	
+	private Integer year;
+	
+	
+	public Integer getYear() {
+		return year;
+	}
+	
+	
+	public Book setYear(Integer year) {
+		this.year = year;
+		return this;
+	}
+	
 	
 	public Integer getPageNumber() {
 		return pageNumber;

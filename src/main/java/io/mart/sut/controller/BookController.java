@@ -27,13 +27,6 @@ public class BookController {
 	private BookRepository repository;
 	
 	
-	@GetMapping("/{id}")
-	public Book findById(@PathVariable long id) {
-		return repository.findById(id)
-				.orElseThrow(BookNotFoundException::new);
-	}
-	
-	
 	@GetMapping("/")
 	public Collection<Book> findBooks() {
 		return repository.getBooks();
